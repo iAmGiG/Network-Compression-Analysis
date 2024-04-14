@@ -55,3 +55,48 @@ python3 client.py
 
 - Once you have collected sufficient data, analyze the variations in latency and throughput across different test runs.
 - This baseline performance will help you to better understand the impact of FWT compression.
+
+## Docker setup and testing
+
+1. Step 1: Install Docker
+
+- First, ensure Docker is installed on your VM. If not, install it using:
+
+```bash
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+
+2. Step 2: Create Docker Images
+
+- You’ll need Docker images that include all the necessary software, like Python, iperf3, and any other tools or libraries your scripts depend on.
+
+Build the Docker images by running:
+
+```bash
+docker build -t server-image -f Dockerfile.server .
+docker build -t client-image -f Dockerfile.client .
+```
+
+3. Step 3: Run Containers
+Launch the containers on your VM. You can use Docker’s network features to mimic a real network scenario.
+
+```bash
+# Start the server container
+docker run -d --name server-container server-image
+
+# Start the client container and link it to the server
+docker run --name client-container --link server-container client-image
+```
+
+4. Step 4: Networking Considerations
+When using Docker, you can customize the network settings to more accurately simulate different network conditions. Docker allows you to create custom networks which can help in emulating different latency, bandwidth, and packet loss scenarios:
+
+```bash
+# Create a custom network
+docker network create --driver bridge custom-net
+
+# Start containers on the custom network
+docker run -d --network custom-net --name server-container server-image
+docker run -d --network custom-net --name client-container client-image
+```

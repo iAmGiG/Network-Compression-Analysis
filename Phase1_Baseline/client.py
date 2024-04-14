@@ -65,7 +65,7 @@ def main():
     Verifying Data Completeness: The script prints the amount of data received to help verify that 
     the full data packet has been correctly transmitted. 
     """
-    server_host = '0.0.0.0'  # Replace with the actual server IP address
+    server_host = '0.0.0.0'
     server_port = 5000
 
     client_socket = connect_to_server(server_host, server_port)
