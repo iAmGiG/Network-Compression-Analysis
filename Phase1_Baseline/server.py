@@ -4,21 +4,17 @@ import os
 
 # Function to generate a data packet of a specific size
 
-"""
-1. Server Socket Setup: The script sets up a server that listens on TCP port 5000 for incoming connections.
-
-2. Data Generation: The generate_data function creates a data packet of the desired size using os.urandom, 
-which generates a string of random bytes.
-
-3. Sending Data: The send_data function sends the entire data packet to the client in one go using sendall.
-
-4. Main Loop: The server listens for connections, accepts them, and based on the client's request, 
-sends the appropriate size data packet and then closes the connection.
-"""
-
 
 def generate_data(size_in_mb):
-    """Generates a binary string that roughly corresponds to the desired size in MB"""
+    """
+    Generates a binary string of random bytes approximately equal to the specified size in megabytes.
+
+    Parameters:
+    - size_in_mb (int): The size of the data to generate in megabytes.
+
+    Returns:
+    - bytes: A bytes object containing random data of the specified size.
+    """
     return os.urandom(size_in_mb * 1024 * 1024)
 
 # Function to send data packets
@@ -26,7 +22,14 @@ def generate_data(size_in_mb):
 
 def send_data(client_socket, data_size):
     """
-    sends the data to the client
+    Sends a specified amount of data to the connected client socket.
+
+    Parameters:
+    - client_socket (socket.socket): The client socket to send data to.
+    - data_size (int): The size of the data to send in megabytes.
+
+    Side Effects:
+    - Sends data through the socket.
     """
     data = generate_data(data_size)
     client_socket.sendall(data)
@@ -34,7 +37,15 @@ def send_data(client_socket, data_size):
 
 def main():
     """
-    The baseline main.
+    Main server function that sets up a server socket, listens for connections, and serves data requests.
+
+    Process:
+    - Sets up the server socket and listens on a specific port.
+    - Accepts connections and handles incoming data size requests from clients.
+    - Sends the requested amount of data and closes the connection after serving.
+
+    Note:
+    - The server runs indefinitely and can be stopped with a KeyboardInterrupt.
     """
     host = '0.0.0.0'
     port = 5000

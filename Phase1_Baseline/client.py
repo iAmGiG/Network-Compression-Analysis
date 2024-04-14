@@ -4,7 +4,14 @@ import time
 
 def connect_to_server(host, port):
     """
-    create socket and connect to the host.
+    Establishes a TCP connection to a specified server using a socket.
+
+    Parameters:
+    - host (str): The hostname or IP address of the server to connect to.
+    - port (int): The port number on the server to connect to.
+
+    Returns:
+    - socket.socket: A socket object that is connected to the server.
     """
     # Create a TCP/IP socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,7 +22,16 @@ def connect_to_server(host, port):
 
 def request_and_receive_data(client_socket, data_size):
     """
-    Reques the data and waits for it.
+    Requests a specific amount of data from a server and receives it in chunks.
+
+    Parameters:
+    - client_socket (socket.socket): The client socket that is connected to the server.
+    - data_size (int): The size of the data to request from the server in megabytes.
+
+    Returns:
+    - tuple: A tuple containing:
+        - bytearray: The received data as a bytearray.
+        - float: The total time elapsed during the data reception in seconds.
     """
     # Send data request to server
     client_socket.sendall(str(data_size).encode('utf-8'))
@@ -41,29 +57,15 @@ def request_and_receive_data(client_socket, data_size):
 
 def main():
     """
-    Connect to Server: The connect_to_server function establishes a 
-    TCP connection to the server on a 
-    specified IP and port.
+    Main execution function for the client script. Connects to a server, requests, and receives data in predefined sizes.
 
-    Request and Receive Data: The request_and_receive_data function sends a 
-    request for data of a specific size, 
-    starts timing, receives the data in chunks until no more data is available, 
-    then stops the timer 
-    and calculates the elapsed time.
+    Steps:
+    - Establishes a connection to the server.
+    - Iterates through a list of data sizes, requests data for each size, and measures the time taken to receive the data.
+    - Displays the requested size, received data length, and the time taken for each transaction.
 
-    Timing Data Transfers: The client measures how long it takes to 
-    receive the data from the server, 
-    which is crucial for evaluating the impact of different 
-    compression techniques on latency.
-
-    Iterating Through Data Sizes: The main function connects 
-    to the server and loops through a list of 
-    predetermined data sizes (1MB, 10MB, 100MB). 
-    For each size, it requests the data, receives it, 
-    and prints out the size, received data length, and latency.
-
-    Verifying Data Completeness: The script prints the amount of data received to help verify that 
-    the full data packet has been correctly transmitted. 
+    Uses:
+    - Useful for testing the latency and effectiveness of data transmission over a network.
     """
     server_host = '0.0.0.0'
     server_port = 5000

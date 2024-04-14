@@ -6,7 +6,14 @@ import numpy as np
 
 def connect_to_server(host, port):
     """
-    create socket and connect to the host.
+    Establishes a TCP connection to a specified server using a socket.
+
+    Parameters:
+    - host (str): The hostname or IP address of the server to connect to.
+    - port (int): The port number on the server to connect to.
+
+    Returns:
+    - socket.socket: A socket object that is connected to the server.
     """
     # Create a TCP/IP socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,6 +23,19 @@ def connect_to_server(host, port):
 
 
 def request_and_receive_data(client_socket, data_size):
+    """
+    Sends a data size request to the server, receives compressed data, 
+    decompresses it using wavelet transforms, and measures the time taken.
+
+    Parameters:
+    - client_socket (socket.socket): The client socket to use for communication.
+    - data_size (int): The size of the data requested from the server, in megabytes.
+
+    Returns:
+    - tuple:
+        - np.ndarray: The decompressed data array.
+        - float: The total time elapsed during the data reception and decompression in seconds.
+    """
     # Send data request to server
     client_socket.sendall(str(data_size).encode('utf-8'))
 
@@ -47,7 +67,11 @@ def request_and_receive_data(client_socket, data_size):
 
 def main():
     """
-    runs the show
+    Main execution function that manages the connection to the server, 
+    requests data, receives and decompresses it, and logs the output.
+
+    This function connects to the server, iteratively requests data of predefined sizes, 
+    decompresses received data using wavelet transforms, and prints out the data size and elapsed time.
     """
     server_host = '0.0.0.0'
     server_port = 5000

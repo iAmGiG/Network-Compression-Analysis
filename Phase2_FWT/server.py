@@ -6,13 +6,34 @@ import os
 
 
 def generate_data(size_in_mb):
-    """Generates a binary string that roughly corresponds to the desired size in MB"""
+    """
+    Generates a binary string of random bytes approximately equal to the specified size in megabytes.
+
+    Parameters:
+    - size_in_mb (int): The size of the data to generate in megabytes.
+
+    Returns:
+    - bytes: A bytes object containing random data of the specified size.
+    """
     return os.urandom(size_in_mb * 1024 * 1024)
 
 
 def send_data(client_socket, data_size):
     """
-    sends the data to the client
+    Generates data, compresses it using Fast Wavelet Transform (FWT), 
+    and sends the compressed data to the client.
+
+    Parameters:
+    - client_socket (socket.socket): The client socket to send data to.
+    - data_size (int): The size of the data to generate and send in megabytes.
+
+    Process:
+    - The data is first converted to a numpy array.
+    - A wavelet decomposition is performed on the array.
+    - The wavelet coefficients are serialized and sent over the socket.
+
+    Side Effects:
+    - Sends compressed data through the socket.
     """
     data = generate_data(data_size)
 
@@ -29,7 +50,14 @@ def send_data(client_socket, data_size):
 
 def main():
     """
-    The baseline main.
+    Main server function that sets up a server socket, listens for connections, 
+    and serves compressed data requests.
+
+    Process:
+    - Sets up the server socket and listens on a specified port.
+    - Accepts connections and handles incoming data size requests from clients.
+    - Generates the requested size of data, compresses it using wavelet transforms, 
+    and sends the compressed data back to the client.
     """
     host = '0.0.0.0'
     port = 5000
