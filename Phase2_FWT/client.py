@@ -3,6 +3,7 @@ import time
 import pywt
 import numpy as np
 
+
 def connect_to_server(host, port):
     """
     create socket and connect to the host.
@@ -55,9 +56,12 @@ def main():
 
     try:
         for data_size in [1, 10, 100]:  # Data sizes in MB
-            decompressed_data, elapsed_time = request_and_receive_data(client_socket, data_size)
-            decompressed_size = len(decompressed_data) / (1024 * 1024)  # Size in MB
-            print(f"Requested {data_size}MB: Received {decompressed_size}MB in {elapsed_time} sec")
+            decompressed_data, elapsed_time = request_and_receive_data(
+                client_socket, data_size)
+            decompressed_size = len(decompressed_data) / \
+                (1024 * 1024)  # Size in MB
+            print(
+                f"Requested {data_size}MB: Received {decompressed_size}MB in {elapsed_time} sec")
 
     finally:
         client_socket.close()
