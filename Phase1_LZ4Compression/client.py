@@ -28,8 +28,14 @@ def receive_and_decompress_data(client_socket):
         if not chunk:
             break
         compressed_data.extend(chunk)
-    data = lz4.frame.decompress(compressed_data)
-    return data
+    # Check if the received data is sufficient for decompression
+    try:
+        data = lz4.frame.decompress(compressed_data)
+        return data
+    except RuntimeError as e:
+        print(f"Decompression error: {e}")
+        print(f"Received data size: {len(compressed_data)} bytes")
+        return None
 
 
 def main():
