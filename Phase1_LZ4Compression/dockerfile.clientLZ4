@@ -1,0 +1,22 @@
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy the client script into the container at the working directory
+COPY client.py ./
+
+# Install any additional dependencies
+# If you have a requirements.txt file, uncomment the next two lines
+# COPY requirements.txt ./
+# RUN pip install --no-cache-dir -r requirements.txt
+
+# Install lz4 library
+RUN pip install --no-cache-dir lz4
+
+# Run client.py when the container launches
+CMD ["python", "./client.py"]
+
+# docker build -t client-app .
+# docker run -it --name client-container client-app
