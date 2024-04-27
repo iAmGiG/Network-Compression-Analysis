@@ -23,18 +23,26 @@ def receive_and_decompress_data(client_socket):
     Receives compressed data from the server and decompresses it using LZ4 compression.
     """
     compressed_data = bytearray()
-    while True:
-        chunk = client_socket.recv(4096)
-        if not chunk:
-            break
-        compressed_data.extend(chunk)
-    # Check if the received data is sufficient for decompression
     try:
-        data = lz4.frame.decompress(compressed_data)
-        return data
-    except RuntimeError as e:
-        print(f"Decompression error: {e}")
-        print(f"Received data size: {len(compressed_data)} bytes")
+        while True:
+            chunk = client_socket.recv(4096)
+            if not chunk:
+                break  # End of data
+            compressed_data.extend(chunk)
+
+        # Try to decompress after the loop ensures all data is received
+        try:
+            data = lz4.frame.decompress(compressed_data)
+            # Send acknowledgment after successful decompression
+            client_socket.sendall(b'ack')
+            return data
+        except RuntimeError as e:
+            logging.error(f"Decompression error: {e}")
+            logging.error(f"Received data size: {len(compressed_data)} bytes")
+            return None
+
+    except Exception as e:
+        logging.error(f"Error in reception: {e}")
         return None
 
 

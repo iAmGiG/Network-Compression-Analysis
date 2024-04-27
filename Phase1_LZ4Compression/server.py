@@ -1,3 +1,4 @@
+import time
 import socket
 import os
 import lz4.frame
@@ -45,11 +46,22 @@ def send_data(client_socket, data_size):
     Side Effects:
     - Sends compressed data through the socket.
     """
-    logging.info(f"Generating {data_size}MB of data.")
-    data = generate_data(data_size)
-    compressed_data = compress_data(data)
-    logging.info(f"Sending {len(compressed_data)} bytes of compressed data.")
-    client_socket.sendall(compressed_data)
+    try:
+        logging.info(f"Generating {data_size}MB of data.")
+        data = generate_data(data_size)
+        compressed_data = compress_data(data)
+        logging.info(
+            f"Sending {len(compressed_data)} bytes of compressed data.")
+        client_socket.sendall(compressed_data)
+        # Wait for the client to confirm data reception
+        # Assuming the client sends back a simple "ack"
+        client_socket.recv(1024)
+        # Wait for a second before considering closing the connection (for testing)
+        time.sleep(1)
+    except socket.error as e:
+        logging.error(f"Error sending data: {e}")
+    finally:
+        logging.info("Completed sending data.")
 
 
 def main():
