@@ -1,0 +1,11 @@
+# Use Ubuntu as the base image
+FROM ubuntu:latest
+
+# Install iperf3
+RUN apt-get update && apt-get install -y iperf3
+
+# No need to expose a port here unless the client also acts as a server
+# Expose if needed (not typical for client-only operations)
+# EXPOSE <some_port>
+
+# The CMD will be provided at runtime
