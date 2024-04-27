@@ -36,7 +36,7 @@ def main():
     """
     Main execution function for the client.
     """
-    server_host = '0.0.0.0'
+    server_host = 'pha_sel_lz4_container'
     server_port = 5000
 
     with connect_to_server(server_host, server_port) as client_socket:
