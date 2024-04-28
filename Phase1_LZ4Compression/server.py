@@ -72,7 +72,7 @@ def main():
     - Sets up the server socket and listens on a specific port.
     - Accepts connections, receives data size requests from clients, generates the requested size of data, compresses it, and sends the compressed data back to the client.
     """
-    host = '0.0.0.0'
+    host = '172.17.0.2'
     port = 5000
     print(f"Server is running and listening on port {port}")
 

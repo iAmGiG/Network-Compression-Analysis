@@ -50,7 +50,7 @@ def main():
     """
     Main execution function for the client.
     """
-    server_host = '172.17.0.2'
+    server_host = '0.0.0.0'
     server_port = 5000
 
     with connect_to_server(server_host, server_port) as client_socket:
