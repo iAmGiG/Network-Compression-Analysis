@@ -51,3 +51,41 @@ iperf3 -c <server_ip_address> > iperf_log.txt
 ```
 
 - This command will run the client and save the output directly into iperf_log.txt.
+
+Baseline Testing with iperf3 (Phase 1):
+
++-------------------+    Network     +-------------------+
+|                   | <------------> |                   |
+| iperf3-server     |                | iperf3-client     |
+| Container         |                | Container         |
+| (Server Mode)     |                | (Client Mode)     |
+|                   |                |                   |
++-------------------+                +-------------------+
+    Port 5201 Exposed                    Connects to Server
+    on Docker Host                       IP on Port 5201
+
+Phase 1 LZ4 Compression and Phase 2 FWT Testing with Python Scripts:
+
++-----------------------+    Network     +-----------------------+
+|                       | <------------> |                       |
+| Python Server         |                | Python Client         |
+| Container             |                | Container             |
+| (With LZ4 or FWT)     |                | (Sends Requests)      |
+|                       |                |                       |
++-----------------------+                +-----------------------+
+    Port 5000 Exposed                        Connects to Server
+    on Docker Host                           IP on Port 5000
+
+The flow for testing would be:
+
+1. Run baseline tests with the iperf3 containers to measure raw network performance.
+2. Shut down the iperf3 containers.
+3. Run the Python server container with the appropriate compression technology for the current phase.
+4. Run the Python client container to connect to the Python server container and test the application-level performance.
+
+In steps 3 and 4, you would swap out the server container with the relevant version for each phase:
+
+- For Phase 1 LZ4 Compression, use a Python server container built with LZ4 capabilities.
+- For Phase 2 FWT, use a Python server container built with FWT capabilities.
+
+Remember that the Python client needs to know the server's IP address to connect correctly. If you use Docker's default bridge network, this IP address can be found using the Docker inspect command. If the server and client are on the same Docker host, you can also use the host's IP address or `localhost`.

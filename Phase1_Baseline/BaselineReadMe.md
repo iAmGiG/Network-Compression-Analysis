@@ -124,5 +124,3 @@ Run Client Container
 # Run the client container
 docker run --name client-container --link server-container client-image
 ```
-
-This command runs the client container and links it to the server container. Ensure that the client script is configured to connect to the server using the server container's name or IP.
